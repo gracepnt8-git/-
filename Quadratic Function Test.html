@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二次函数第一关：核心基础特训</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --accent: #66bb6a;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --error: #e74c3c;
+            --success: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 { color: var(--text); }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 { color: white; margin: 0; }
+        .header p { opacity: 0.9; }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background-color: #e8f5e9;
+            border: 1px dashed var(--primary);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .trap-alert {
+            background-color: #ffebee;
+            border-left: 4px solid #c62828;
+            padding: 10px 15px;
+            color: #c62828;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .trap-alert::before { content: "⚠️ 易错陷阱："; }
+
+        /* SVG Diagrams */
+        .diagram-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            background: white;
+            padding: 10px;
+        }
+        .diagram-box {
+            text-align: center;
+            width: 45%;
+            min-width: 300px;
+        }
+        svg { border: 1px solid #eee; background: #fafafa; }
+
+        /* Interactive Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--accent);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            text-align: left;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .option-btn:hover { border-color: var(--primary); background: #f1f8e9; }
+        .option-btn.correct { background: #dcedc8; border-color: var(--success); color: #1b5e20; }
+        .option-btn.wrong { background: #ffcdd2; border-color: var(--error); color: #b71c1c; }
+
+        .feedback-area {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback-area.show { display: block; }
+        .feedback-correct { background: #e8f5e9; border: 1px solid #a5d6a7; }
+        .feedback-wrong { background: #ffebee; border: 1px solid #ef9a9a; }
+
+        .next-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 15px;
+            float: right;
+            display: none;
+        }
+        .next-btn:hover { background: #1b5e20; }
+
+        .result-card {
+            text-align: center;
+            display: none;
+        }
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            margin: 0 auto 20px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>二次函数：第一层级通关特训</h1>
+        <p>核心定义 · 三大解析式 · 待定系数法</p>
+    </div>
+
+    <div class="card">
+        <span class="tag">01 概念辨析</span>
+        <h2>核心定义与易错点</h2>
+        <div class="highlight-box">
+            <p>定义式：\( y = ax^2 + bx + c \)</p>
+            <p><strong>铁律：</strong> \( a \neq 0 \) 且 \( x \) 的最高次数为 2。</p>
+        </div>
+        <div class="trap-alert">
+            <p>陷阱预警：题目若说“关于x的函数 \( y=(m-1)x^2... \)” 是二次函数，必须列式 \( m-1 \neq 0 \)；若只说是“函数”，则要分类讨论 \( m-1=0 \) 和 \( m-1 \neq 0 \) 两种情况。</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <span class="tag">02 图形化记忆</span>
+        <h2>三大解析式与图像特征</h2>
+        <p>请看下图，理解“顶点式”与“交点式”在几何上的不同关注点：</p>
+        
+        <div class="diagram-container">
+            <div class="diagram-box">
+                <svg width="300" height="200" viewBox="-150 -50 300 250">
+                    <line x1="-140" y1="200" x2="140" y2="200" stroke="#999" stroke-width="2"/>
+                    <line x1="0" y1="0" x2="0" y2="240" stroke="#999" stroke-width="2"/>
+                    <path d="M -100 50 Q 50 350 120 100" stroke="#2e7d32" stroke-width="3" fill="none" />
+                    <circle cx="50" cy="180" r="5" fill="red" />
+                    <text x="60" y="180" font-size="14" fill="red">顶点 (h, k)</text>
+                    <line x1="50" y1="180" x2="50" y2="200" stroke="red" stroke-dasharray="4"/>
+                    <text x="-140" y="20" font-size="12">顶点式关注最高/最低点</text>
+                    <text x="-140" y="40" font-size="12">\( y=a(x-h)^2+k \)</text>
+                </svg>
+                <p><strong>顶点式：</strong> 已知最值、对称轴或顶点时使用。</p>
+            </div>
+
+            <div class="diagram-box">
+                <svg width="300" height="200" viewBox="-150 -50 300 250">
+                    <line x1="-140" y1="150" x2="140" y2="150" stroke="#999" stroke-width="2"/> <line x1="0" y1="0" x2="0" y2="240" stroke="#999" stroke-width="2"/>
+                    <path d="M -80 0 Q 0 300 80 0" stroke="#1565c0" stroke-width="3" fill="none" />
+                    <circle cx="-80" cy="150" r="5" fill="blue" />
+                    <circle cx="80" cy="150" r="5" fill="blue" />
+                    <text x="-100" y="140" font-size="14" fill="blue">x1</text>
+                    <text x="80" y="140" font-size="14" fill="blue">x2</text>
+                    <text x="-140" y="20" font-size="12">交点式关注与x轴的交点</text>
+                    <text x="-140" y="40" font-size="12">\( y=a(x-x_1)(x-x_2) \)</text>
+                </svg>
+                <p><strong>交点式：</strong> 已知与x轴两个交点坐标时使用。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="quiz-section" id="quiz-app">
+        <div class="quiz-header">
+            <span>🎓 实战演练</span>
+            <span id="progress-text">1 / 5</span>
+        </div>
+
+        <div id="question-container">
+            </div>
+
+        <div id="feedback" class="feedback-area">
+            </div>
+
+        <button id="next-btn" class="next-btn" onclick="nextQuestion()">下一题 ➡</button>
+    </div>
+
+    <div class="quiz-section result-card" id="result-card">
+        <div class="score-circle" id="final-score">0</div>
+        <h3>本次特训完成！</h3>
+        <p id="result-comment">正在分析你的掌握情况...</p>
+        <button class="next-btn" style="display:inline-block; float:none;" onclick="location.reload()">重新挑战</button>
+    </div>
+
+</div>
+
+<script>
+    // 题库数据：第一层级必须掌握的题型
+    const questions = [
+        {
+            id: 1,
+            question: "【基础概念】下列函数中，属于二次函数的是？",
+            options: [
+                "A. \\( y = 2x - 1 \\)",
+                "B. \\( y = (x-1)^2 - x^2 \\)",
+                "C. \\( y = -\\frac{1}{2}x^2 + 2 \\)",
+                "D. \\( y = ax^2 + bx + c \\)"
+            ],
+            correct: 2, // Index 2 corresponds to C
+            explanation: "<strong>解析：</strong><br>A是一次函数；<br>B展开后为 \\( y=x^2-2x+1-x^2 = -2x+1 \\)，是一次函数；<br>D中未注明 \\( a \\neq 0 \\)；<br>C符合定义，且 \\( a = -\\frac{1}{2} \\neq 0 \\)，故选C。"
+        },
+        {
+            id: 2,
+            question: "【顶点与对称轴】抛物线 \\( y = -2(x+1)^2 - 3 \\) 的顶点坐标是？",
+            options: [
+                "A. \\( (1, -3) \\)",
+                "B. \\( (-1, -3) \\)",
+                "C. \\( (-1, 3) \\)",
+                "D. \\( (1, 3) \\)"
+            ],
+            correct: 1,
+            explanation: "<strong>解析：</strong><br>顶点式 \\( y=a(x-h)^2+k \\) 的顶点是 \\( (h,k) \\)。<br>原式可看作 \\( y=-2(x-(-1))^2 + (-3) \\)。<br>所以 \\( h=-1, k=-3 \\)，顶点为 \\( (-1, -3) \\)。"
+        },
+        {
+            id: 3,
+            question: "【中考常考：解析式求法】已知抛物线的顶点坐标为 \\( (1, 2) \\)，且经过点 \\( (0, 3) \\)，应设解析式为？",
+            options: [
+                "A. \\( y = ax^2 + bx + c \\)",
+                "B. \\( y = a(x-1)^2 + 2 \\)",
+                "C. \\( y = a(x+1)^2 + 2 \\)",
+                "D. \\( y = a(x-1)(x-2) \\)"
+            ],
+            correct: 1,
+            explanation: "<strong>解析：</strong><br>已知顶点坐标，首选<strong>顶点式</strong>。<br>顶点 \\( (h,k) = (1,2) \\)，代入得 \\( y = a(x-1)^2 + 2 \\)。<br>选B。"
+        },
+        {
+            id: 4,
+            question: "【系数几何意义】关于抛物线 \\( y = x^2 - 2x + 1 \\)，下列说法正确的是？",
+            options: [
+                "A. 开口向下",
+                "B. 对称轴是直线 \\( x = -1 \\)",
+                "C. 与 y 轴交点是 \\( (0, -1) \\)",
+                "D. 与 x 轴只有一个交点"
+            ],
+            correct: 3,
+            explanation: "<strong>解析：</strong><br>A: \\( a=1>0 \\)，开口向上，错。<br>B: 对称轴 \\( x = -\\frac{b}{2a} = -\\frac{-2}{2} = 1 \\)，错。<br>C: 当 \\( x=0 \\) 时 \\( y=1 \\)，交点 \\( (0,1) \\)，错。<br>D: \\( \\Delta = (-2)^2 - 4\\times1\\times1 = 0 \\)，或者配方得 \\( y=(x-1)^2 \\)，顶点在x轴上，只有一个交点。选D。"
+        },
+        {
+            id: 5,
+            question: "【陷阱题】若函数 \\( y = (m-2)x^{|m|} + 3x \\) 是关于 x 的二次函数，则 m 的值是？",
+            options: [
+                "A. 2",
+                "B. -2",
+                "C. 2 或 -2",
+                "D. 0"
+            ],
+            correct: 1,
+            explanation: "<strong>解析：</strong><br>由定义得两条件：<br>1. 次数 \\( |m| = 2 \\) $\\rightarrow$ \\( m = \\pm 2 \\)<br>2. 系数 \\( m-2 \\neq 0 \\) $\\rightarrow$ \\( m \\neq 2 \\)<br>综合得 \\( m = -2 \\)。<br>选B。"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    function loadQuestion() {
+        answered = false;
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('feedback').className = 'feedback-area';
+        document.getElementById('feedback').innerHTML = '';
+        document.getElementById('progress-text').innerText = `${currentQuestionIndex + 1} / ${questions.length}`;
+
+        const q = questions[currentQuestionIndex];
+        let html = `<div class="question-text">${q.question}</div><div class="options-grid">`;
+        
+        q.options.forEach((opt, index) => {
+            html += `<button class="option-btn" onclick="checkAnswer(${index})">${opt}</button>`;
+        });
+        html += `</div>`;
+
+        document.getElementById('question-container').innerHTML = html;
+        
+        // Render MathJax
+        MathJax.typesetPromise();
+    }
+
+    function checkAnswer(selectedIndex) {
+        if (answered) return;
+        answered = true;
+
+        const q = questions[currentQuestionIndex];
+        const buttons = document.querySelectorAll('.option-btn');
+        const feedback = document.getElementById('feedback');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (selectedIndex === q.correct) {
+            score++;
+            buttons[selectedIndex].classList.add('correct');
+            feedback.innerHTML = "🎉 <strong>回答正确！</strong><br>" + q.explanation;
+            feedback.classList.add('feedback-correct', 'show');
+        } else {
+            buttons[selectedIndex].classList.add('wrong');
+            buttons[q.correct].classList.add('correct'); // Show correct one
+            feedback.innerHTML = "❌ <strong>回答错误</strong><br>" + q.explanation;
+            feedback.classList.add('feedback-wrong', 'show');
+        }
+
+        nextBtn.style.display = 'block';
+        
+        // Re-render MathJax inside feedback
+        MathJax.typesetPromise();
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-app').style.display = 'none';
+        document.getElementById('result-card').style.display = 'block';
+        document.getElementById('final-score').innerText = `${score * 20}%`;
+        
+        let comment = "";
+        if (score === 5) comment = "太棒了！基础非常扎实，可以进入下一层级！🌟";
+        else if (score >= 3) comment = "基础还不错，但要注意易错点的排查（特别是a≠0）！👍";
+        else comment = "基础较弱，建议重新阅读上方的知识点讲解再试一次。💪";
+        
+        document.getElementById('result-comment').innerText = comment;
+    }
+
+    // Initialize
+    loadQuestion();
+
+</script>
+
+</body>
+</html>
